@@ -22,3 +22,10 @@ export function login(data: any) {
 export function logout() {
     return request('system/logout', {}, 'POST');
 }
+
+/**
+ * 获取用户登录信息
+ */
+export function loginInfo() {
+    return request('system/loginInfo', {}, 'GET');
+}

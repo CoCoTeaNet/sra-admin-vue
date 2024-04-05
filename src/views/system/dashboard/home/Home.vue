@@ -52,7 +52,7 @@ const loadTableData = (): void => {
   let param = {
     pageNo: 1,
     pageSize: 50,
-    version: {}
+    sysVersion: {}
   };
   reqCommonFeedback(listByPage(param), (data: any) => {
     pageVo.value.records = data.rows;

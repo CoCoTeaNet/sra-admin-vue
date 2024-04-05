@@ -46,7 +46,7 @@
 import {ref, reactive, onMounted} from "vue";
 import type {ElForm} from 'element-plus';
 import {UserFilled, Lock, Connection} from "@element-plus/icons-vue";
-import {getCaptcha,login} from "@/api/system/login-api";
+import {getCaptcha, login} from "@/api/system/login-api";
 import {ElMessage} from "element-plus";
 import {setUserInfo} from "@/store";
 import {useRouter, useRoute} from "vue-router";
@@ -104,8 +104,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
       loading.value = true;
       login(loginForm).then((res: any) => {
         if (res.code === 200) {
-          setUserInfo(res.data);
-          router.push({path: route.query.redirect ? decodeURIComponent(`${route.query.redirect}`) : '/admin/home'});
+          router.push({
+            path: route.query.redirect ? decodeURIComponent(`${route.query.redirect}`) : '/admin/home'
+          });
         } else {
           ElMessage.error(!res.data ? res.message : res.data);
           getVerifyCodeImage();

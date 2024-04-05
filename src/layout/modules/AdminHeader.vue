@@ -75,7 +75,7 @@
 import {router} from "@/router";
 import {useRoute} from "vue-router";
 import {reqCommonFeedback} from "@/api/ApiFeedback";
-import {logout} from "@/api/system/login-api";
+import {loginInfo, logout} from "@/api/system/login-api";
 import {setUserInfo, useStore, setCollapseMenu, addTabItem} from "@/store";
 import AdminTab from "@/layout/modules/AdminTab.vue";
 import {Brush, Expand, Fold, FullScreen, House} from "@element-plus/icons-vue";
@@ -103,6 +103,9 @@ const colorTheme4 = ref<string>(defaultColor4);
 const isDark = ref<boolean>(false);
 
 onMounted(() => {
+  // 登录用户信息
+  reqCommonFeedback(loginInfo(), (data:any) => setUserInfo(data));
+  // 用户主题
   reqCommonFeedback(sysThemeApi.loadByUser(), (data: any) => {
     colorTheme.value = data.primaryColor;
     colorTheme2.value = data.color2;
