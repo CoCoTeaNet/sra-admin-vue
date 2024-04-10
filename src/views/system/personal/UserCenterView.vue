@@ -171,12 +171,12 @@ import {onMounted, reactive, ref} from "vue";
 import type {FormInstance, UploadRawFile, UploadUserFile, UploadInstance, UploadProps} from 'element-plus';
 import {genFileId} from 'element-plus';
 import {Lock} from "@element-plus/icons-vue";
-import {getDetail, update, doModifyPassword} from "@/api/system/user-api";
+import {getDetail, update, doModifyPassword} from "@/api/system/sys-user-api";
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
 import {RULE_MOBILE, RULE_EMAIL} from "@/utils/rules-util";
 import {updateUserInfo} from "@/store";
 import {ElMessage} from "element-plus";
-import {logout} from "@/api/system/login-api";
+import {logout} from "@/api/system/sys-login-api";
 
 const upload = ref<UploadInstance>();
 const fileList = ref<UploadUserFile[]>([]);

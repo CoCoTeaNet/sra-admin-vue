@@ -46,7 +46,7 @@
 import {ref, reactive, onMounted} from "vue";
 import type {ElForm} from 'element-plus';
 import {UserFilled, Lock, Connection} from "@element-plus/icons-vue";
-import {getCaptcha, login} from "@/api/system/login-api";
+import {getCaptcha, login} from "@/api/system/sys-login-api";
 import {ElMessage} from "element-plus";
 import {setUserInfo} from "@/store";
 import {useRouter, useRoute} from "vue-router";

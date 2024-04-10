@@ -100,7 +100,7 @@
 
 <script setup lang="ts">
 import {onMounted, ref, nextTick} from "vue";
-import {deleteBatch, listByPage} from "@/api/system/sysFile-api";
+import {deleteBatch, listByPage} from "@/api/system/sys-file-api";
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
 import TableManage from "@/components/container/TableManage.vue";
 import {ElMessageBox, UploadProps, ElMessage, UploadUserFile} from "element-plus";

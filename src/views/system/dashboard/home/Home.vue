@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import {reqCommonFeedback} from "@/api/ApiFeedback";
-import {listByPage} from "@/api/system/version-api";
+import {listByPage} from "@/api/system/sys-version-api";
 import {onMounted, ref} from "vue";
 
 const pageVo = ref<PageVO>({pageNo: 1, pageSize: 50, total: 0, records: []});

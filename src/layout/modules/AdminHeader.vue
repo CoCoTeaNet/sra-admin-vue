@@ -75,14 +75,14 @@
 import {router} from "@/router";
 import {useRoute} from "vue-router";
 import {reqCommonFeedback} from "@/api/ApiFeedback";
-import {loginInfo, logout} from "@/api/system/login-api";
+import {loginInfo, logout} from "@/api/system/sys-login-api";
 import {setUserInfo, useStore, setCollapseMenu, addTabItem} from "@/store";
 import AdminTab from "@/layout/modules/AdminTab.vue";
 import {Brush, Expand, Fold, FullScreen, House} from "@element-plus/icons-vue";
 import {onMounted, ref} from 'vue';
 import {ElMessage} from 'element-plus';
 import {useDark, useToggle} from '@vueuse/core'
-import sysThemeApi from "@/api/system/sysTheme-api";
+import sysThemeApi from "@/api/system/sys-theme-api";
 
 const themeDrawer = ref(false);
 const store = useStore();

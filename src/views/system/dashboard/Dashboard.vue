@@ -70,7 +70,7 @@
 <script setup lang="ts">
 import * as echarts from "echarts";
 import {nextTick, onMounted, reactive, ref} from "vue";
-import {getSystemInfo, getCount} from "@/api/system/dashboard-api";
+import {getSystemInfo, getCount} from "@/api/system/sys-dashboard-api";
 import {reqCommonFeedback} from "@/api/ApiFeedback";
 import unitUtil from "@/utils/unit-util";
 

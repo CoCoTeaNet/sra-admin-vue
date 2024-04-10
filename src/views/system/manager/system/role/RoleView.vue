@@ -85,8 +85,8 @@
 <script setup lang="ts">
 import {onMounted, nextTick, reactive, ref} from "vue";
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
-import roleApi, {grantPermissionsByRoleId} from "@/api/system/role-api";
-import {listByTreeAsRoleSelection, listByRoleId} from "@/api/system/menu-api";
+import sysRoleApi, {grantPermissionsByRoleId} from "@/api/system/sys-role-api";
+import {listByTreeAsRoleSelection, listByRoleId} from "@/api/system/sys-menu-api";
 import TableManage from "@/components/container/TableManage.vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {DeleteFilled, Plus, RefreshRight, Search} from "@element-plus/icons-vue";
@@ -137,7 +137,7 @@ const loadTableData = () => {
     pageSize: pageParam.value.pageSize,
     role: {roleName: pageParam.value.searchObject.roleName, roleKey: pageParam.value.searchObject.roleKey}
   };
-  reqCommonFeedback(roleApi.listByPage(param), (data: any) => {
+  reqCommonFeedback(sysRoleApi.listByPage(param), (data: any) => {
     pageVo.value.records = data.rows;
     pageVo.value.total = data.recordCount;
     loading.value = false;
@@ -149,13 +149,13 @@ const onUpdateFormConfirm = (formEl: any): void => {
     if (valid) {
       if (!editForm.value.id) {
         // 新增
-        reqSuccessFeedback(roleApi.add(editForm.value), '新增成功', () => {
+        reqSuccessFeedback(sysRoleApi.add(editForm.value), '新增成功', () => {
           loadTableData();
           dialogEditVisible.value = false;
         });
       } else {
         // 修改
-        reqSuccessFeedback(roleApi.update(editForm.value), '修改成功', () => {
+        reqSuccessFeedback(sysRoleApi.update(editForm.value), '修改成功', () => {
           loadTableData();
           dialogEditVisible.value = false;
         });
@@ -260,7 +260,7 @@ const onDeleteBatch = () => {
         type: 'warning',
       }
   ).then(() => {
-    reqCommonFeedback(roleApi.deleteBatch(ids), () => {
+    reqCommonFeedback(sysRoleApi.deleteBatch(ids), () => {
       ElMessage({type: 'success', message: '删除成功'});
       loadTableData();
     });

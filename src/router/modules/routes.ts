@@ -9,10 +9,6 @@ const Dashboard = () => import("@/views/system/dashboard/Dashboard.vue");
 const NotFound = () => import("@/views/error/NotFound.vue");
 const UserCenterView = () => import("@/views/system/personal/UserCenterView.vue");
 const OperationLogView = () => import("@/views/system/manager/system/log/OperationLogView.vue");
-const ArticleListView = () => import("@/views/system/manager/cms/ArticleListView.vue");
-const CommentView = () => import("@/views/system/manager/cms/CommentView.vue");
-const JobView = () => import("@/views/system/manager/schedule/JobView.vue");
-const JobLogView = () => import("@/views/system/manager/schedule/JobLogView.vue");
 const VersionView = () => import("@/views/system/manager/system/version/VersionView.vue");
 const SysFileView = () => import("@/views/system/manager/system/file/SysFileView.vue");
 const RecycleBinView = () => import("@/views/system/manager/system/file/RecycleBinView.vue");
@@ -41,10 +37,6 @@ export const routes = [
             {path: 'dictionary-manager', meta: {title: '字典管理'}, name: 'DictionaryView', component: DictionaryView},
             {path: 'operation-log-manager', meta: {title: '日志管理'}, name: 'OperationLogView', component: OperationLogView},
             {path: 'user-center', meta: {title: '用户中心'}, name: 'UserCenterView', component: UserCenterView},
-            {path: 'article-list', meta: {title: '文章列表'}, name: 'ArticleListView', component: ArticleListView},
-            {path: 'comment-manager', meta: {title: '评论管理'}, name: 'CommentView', component: CommentView},
-            {path: 'job-manager', meta: {title: '任务管理'}, name: 'JobView', component: JobView},
-            {path: 'JobLog-manager', meta: {title: '调度记录'}, name: 'JobLogView', component: JobLogView},
             {path: 'version-manager', meta: {title: '版本管理'}, name: 'VersionView', component: VersionView},
             {path: 'sysFile-manager', meta: {title: '文件管理'}, name: 'SysFileView', component: SysFileView},
             {path: 'recycleBin-manager', meta: {title: '文件回收站'}, name: 'RecycleBinView', component: RecycleBinView},

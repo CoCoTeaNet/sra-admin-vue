@@ -80,7 +80,7 @@
 <script setup lang="ts">
 import {nextTick, onMounted, ref} from "vue";
 import {reqCommonFeedback} from "@/api/ApiFeedback";
-import {listByPage, deleteBatch} from "@/api/system/user-api";
+import {listByPage, deleteBatch} from "@/api/system/sys-user-api";
 import TableManage from "@/components/container/TableManage.vue";
 import AddUser from "@/views/system/manager/system/user/module/AddUser.vue";
 import {ElMessage, ElMessageBox} from "element-plus";

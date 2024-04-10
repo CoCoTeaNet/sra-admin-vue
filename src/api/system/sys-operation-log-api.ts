@@ -1,6 +1,6 @@
 import {post, request} from '@/utils/axios-util';
 
-const operationLogApi = {
+const sysOperationLogApi = {
     listByPage: listByPage,
     deleteBatch: deleteBatch
 };
@@ -23,4 +23,4 @@ export function deleteBatch(data: any) {
     return request('system/operationLog/deleteBatch', data, post);
 }
 
-export default operationLogApi;
+export default sysOperationLogApi;

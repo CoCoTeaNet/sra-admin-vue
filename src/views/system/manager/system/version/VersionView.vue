@@ -77,7 +77,7 @@
 
 <script setup lang="ts">
 import {onMounted, ref, reactive, nextTick} from "vue";
-import {add, deleteBatch, update, listByPage} from "@/api/system/version-api";
+import {add, deleteBatch, update, listByPage} from "@/api/system/sys-version-api";
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
 import TableManage from "@/components/container/TableManage.vue";
 import {ElForm} from "element-plus/es";

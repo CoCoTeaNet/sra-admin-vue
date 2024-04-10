@@ -52,9 +52,9 @@
 import {onMounted, reactive, ref, watch} from 'vue';
 import {ElInput, FormInstance} from 'element-plus';
 import {Lock} from "@element-plus/icons-vue";
-import {add, update} from '@/api/system/user-api';
+import {add, update} from '@/api/system/sys-user-api';
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
-import roleApi from "@/api/system/role-api";
+import sysRoleApi from "@/api/system/sys-role-api";
 
 const props = withDefaults(defineProps<{
   show?: boolean,
@@ -85,7 +85,7 @@ const emit = defineEmits(['update:show', 'onConfirm']);
 
 const loadRoles = () => {
   let param: any = {pageNo: 1, pageSize: 1000, role: {roleName: ''}}
-  reqCommonFeedback(roleApi.listByPage(param), (data: any) => {
+  reqCommonFeedback(sysRoleApi.listByPage(param), (data: any) => {
     roleOptions.value = data.rows;
   });
 }

@@ -55,10 +55,10 @@
 import {nextTick, onMounted, ref, watch} from "vue";
 import SraSimpleTable from "@/components/table/simple-table/SraSimpleTable.vue";
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
-import operationLogApi from "@/api/system/operation-log-api";
+import sysOperationLogApi from "@/api/system/sys-operation-log-api";
 import TableManage from "@/components/container/TableManage.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {deleteBatch} from "@/api/system/user-api";
+import {deleteBatch} from "@/api/system/sys-user-api";
 import {DeleteFilled, RefreshRight, Search} from "@element-plus/icons-vue";
 
 // 分页参数
@@ -111,7 +111,7 @@ const onReset = (): void => {
 }
 
 const onDelete = (id: string) => {
-  reqSuccessFeedback(operationLogApi.deleteBatch([id]), '删除成功', () => {
+  reqSuccessFeedback(sysOperationLogApi.deleteBatch([id]), '删除成功', () => {
     loadTableData();
   });
 }
@@ -123,7 +123,7 @@ const loadTableData = () => {
     pageSize: pageParam.value.pageSize,
     operationLog: pageParam.value.searchObject
   };
-  reqCommonFeedback(operationLogApi.listByPage(param), (data: any) => {
+  reqCommonFeedback(sysOperationLogApi.listByPage(param), (data: any) => {
     pageVo.value.records = data.rows;
     pageVo.value.total = data.recordCount;
     loading.value = false;
@@ -139,7 +139,7 @@ const onBatchDelete = () => {
         type: 'warning',
       }
   ).then(() => {
-    reqCommonFeedback(operationLogApi.deleteBatch(ids), () => {
+    reqCommonFeedback(sysOperationLogApi.deleteBatch(ids), () => {
       ElMessage({type: 'success', message: '删除成功'});
       loadTableData();
     });

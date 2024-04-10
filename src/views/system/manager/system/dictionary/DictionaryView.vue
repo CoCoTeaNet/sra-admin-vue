@@ -90,7 +90,7 @@
 
 <script setup lang="ts">
 import {nextTick, onMounted, ref, reactive} from "vue";
-import {listByTree, add, deleteBatch, update} from "@/api/system/dictionary-api";
+import {listByTree, add, deleteBatch, update} from "@/api/system/sys-dictionary-api";
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
 import TableManage from "@/components/container/TableManage.vue";
 import {ElForm} from "element-plus/es";

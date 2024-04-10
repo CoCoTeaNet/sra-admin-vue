@@ -1,6 +1,6 @@
 import {request} from '@/utils/axios-util';
 
-const roleApi = {
+const sysRoleApi = {
     listByPage: listByPage,
     add: add,
     deleteBatch: deleteBatch,
@@ -43,4 +43,4 @@ export function grantPermissionsByRoleId(data: any) {
     return request('system/role/grantPermissionsByRoleId', data, 'POST');
 }
 
-export default roleApi;
+export default sysRoleApi;

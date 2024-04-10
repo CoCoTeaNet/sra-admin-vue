@@ -84,7 +84,7 @@
 
 <script setup lang="ts">
 import {onMounted, ref, nextTick} from "vue";
-import {recycleBinDeleteBatch, recycleBinPage, recoveryBatch} from "@/api/system/sysFile-api";
+import {recycleBinDeleteBatch, recycleBinPage, recoveryBatch} from "@/api/system/sys-file-api";
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
 import TableManage from "@/components/container/TableManage.vue";
 import {ElMessageBox, ElMessage} from "element-plus";
