@@ -27,7 +27,6 @@ interface SysFileModel {
     updateBy?: string,
     // 更新时间
     updateTime?: string,
-    // 删除状态：0删除 1未删除
-    deleteStatus?: string,
-
+    // 是否分享
+    isShare?: number
 }

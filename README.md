@@ -1,4 +1,4 @@
-# sra-ui
+# SRA-ADMIN-VUE
 
 ## Project setup
 ```

@@ -16,16 +16,15 @@ export function login(data: any) {
 }
 
 /**
- * 用户退出登录
- * @returns {Promise<*>}
- */
-export function logout() {
-    return request('system/logout', {}, 'POST');
-}
-
-/**
  * 获取用户登录信息
  */
 export function loginInfo() {
     return request('system/loginInfo', {}, 'GET');
+}
+
+/**
+ * 用户退出登录
+ */
+export function logout() {
+    return request('system/logout', {}, 'POST');
 }

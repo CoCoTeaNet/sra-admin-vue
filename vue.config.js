@@ -18,12 +18,10 @@ module.exports = defineConfig({
             resolvers: [ElementPlusResolver()],
         }));
     }, devServer: {
+        port: 8080,
         proxy: {
             '/api': {
-                target: 'http://127.0.0.1:9000/v2-api',
-                changeOrigin: true,
-                ws: true,
-                pathRewrite: {
+                target: 'http://localhost:9000/v2-api', changeOrigin: true, ws: true, pathRewrite: {
                     '^/api': ''
                 }
             }

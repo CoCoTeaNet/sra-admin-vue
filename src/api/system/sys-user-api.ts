@@ -1,11 +1,11 @@
-import {request, post, get} from '@/utils/axios-util';
+import {request, post} from '@/utils/axios-util';
 
 /**
  * 增加一名用户
  * @param data
  */
 export function add(data: any) {
-    return request('system/user/add', data, post);
+    return request('system/user/add', data, 'POST');
 }
 
 /**
@@ -14,7 +14,7 @@ export function add(data: any) {
  * @returns {Promise<any>}
  */
 export function deleteBatch(data: any) {
-    return request('system/user/deleteBatch', data, post);
+    return request('system/user/deleteBatch', data, 'POST');
 }
 
 /**
@@ -23,7 +23,7 @@ export function deleteBatch(data: any) {
  * @returns {Promise<any>}
  */
 export function update(data: any) {
-    return request('system/user/update', data, post);
+    return request('system/user/update', data, 'POST');
 }
 
 /**
@@ -32,14 +32,18 @@ export function update(data: any) {
  * @returns {Promise<any>}
  */
 export function listByPage(data: any) {
-    return request('system/user/listByPage', data, post);
+    return request('system/user/listByPage', data, 'POST');
 }
 
 /**
  * 用户获取个人详细信息
  */
 export function getDetail() {
-    return request('system/user/getDetail', {}, get);
+    return request('system/user/getDetail', {}, 'GET');
+}
+
+export function updateByUser(data: any) {
+    return request('system/user/updateByUser', data, 'POST');
 }
 
 /**

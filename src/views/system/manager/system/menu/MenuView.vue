@@ -7,8 +7,8 @@
           <el-input placeholder="菜单名称" v-model:model-value="searchObj.menuName"/>
         </el-form-item>
       </el-form>
-      <el-button :icon="Search" type="primary" @click="loadTableData">搜索</el-button>
-      <el-button :icon="RefreshRight" @click="resetSearchForm">重置</el-button>
+      <el-button type="primary" @click="loadTableData" :icon="Search">搜索</el-button>
+      <el-button @click="resetSearchForm" :icon="RefreshRight">重置</el-button>
       <el-button @click="onExpandAll">
         <el-icon>
           <arrow-right-bold v-if="!isExpandAll"/>
@@ -19,7 +19,7 @@
     </template>
 
     <template #operate>
-      <el-button :icon="Plus" type="primary" @click="onAdd">添加菜单</el-button>
+      <el-button type="primary" @click="onAdd" :icon="Plus">添加菜单</el-button>
     </template>
 
     <!-- 表格视图 -->
@@ -27,7 +27,7 @@
       <el-table v-if="isShowTable" stripe row-key="id" :data="records" v-model:default-expand-all="isExpandAll">
         <el-table-column prop="iconPath" width="100" label="图标">
           <template #default="scope">
-            <el-icon>
+            <el-icon v-if="scope.row.iconPath">
               <component :is="scope.row.iconPath"></component>
             </el-icon>
           </template>
@@ -50,13 +50,16 @@
             <el-tag :type="getMenuStatus(scope.row.menuStatus, 0)">{{ getMenuStatus(scope.row.menuStatus, 1) }}</el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="sort" width="100" label="权重"/>
         <el-table-column prop="createTime" width="200" label="创建时间"/>
         <el-table-column prop="updateTime" width="200" label="更新时间"/>
         <!-- 单行操作 -->
-        <el-table-column fixed="right" width="180" label="操作">
+        <el-table-column fixed="right" width="200" label="操作">
           <template #default="scope">
-            <el-button :icon="Edit" size="small" @click="onEdit(scope.row)">编辑</el-button>
-            <el-button :icon="DeleteFilled" size="small" plain type="danger" @click="onRemove(scope.row)">删除</el-button>
+            <el-button size="small" @click="onEdit(scope.row)" :icon="Edit">编辑</el-button>
+            <el-button size="small" plain type="danger" @click="onRemove(scope.row)" :icon="DeleteFilled">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -89,7 +92,7 @@
             <el-input v-model="editForm.sort" type="number"></el-input>
           </el-form-item>
           <el-form-item label="菜单图标">
-            <icon-selection v-model="editForm.iconPath"/>
+            <icon-selection v-model="editForm.iconPath" value=""/>
           </el-form-item>
           <el-form-item label="上级菜单">
             <el-cascader clearable v-model="editForm.parentId" placeholder="选择节点"
@@ -238,7 +241,7 @@ const onRemove = (row: MenuModel): void => {
 
 const loadTableData = (): void => {
   if (!loading.value) loading.value = true;
-  let param = {menu: {isMenu: 1, menuName: searchObj.value.menuName}};
+  let param = {sysMenu: {isMenu: 1, menuName: searchObj.value.menuName}};
   reqCommonFeedback(listByTree(param), (data: any) => {
     listUtil.treeMap(data, (item: { disabled: boolean; menuType: number; }) => item.disabled = (item.menuType != 0));
     records.value = data;

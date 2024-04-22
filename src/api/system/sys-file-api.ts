@@ -1,4 +1,12 @@
-import {request, post} from '@/utils/axios-util';
+import {request, requestFile, post, get} from '@/utils/axios-util';
+
+export function update(data?: any) {
+	return request('system/file/update', data, post);
+}
+
+export function download(fileId?: string) {
+	return requestFile(`system/file/download/${fileId}`, {}, get);
+}
 
 export function deleteBatch(data: any) {
 	return request('system/file/deleteBatch', data, post);

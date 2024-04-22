@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :model-value="show"
+  <el-dialog v-model="show"
              :title="editType === 'update' ? '更新用户' : '新增用户'"
              width="50%"
              @close="onCancel">
@@ -54,7 +54,7 @@ import {ElInput, FormInstance} from 'element-plus';
 import {Lock} from "@element-plus/icons-vue";
 import {add, update} from '@/api/system/sys-user-api';
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
-import sysRoleApi from "@/api/system/sys-role-api";
+import roleApi from "@/api/system/sys-role-api";
 
 const props = withDefaults(defineProps<{
   show?: boolean,
@@ -74,19 +74,18 @@ const rules = reactive({
 });
 
 watch(() => props.show, (b: boolean) => {
-  if (b) dataForm.value = props.editType === 'update' ? props.user : {sex: 0, accountStatus: 1};
-});
-
-onMounted(() => {
-  loadRoles();
+  if (b) {
+    dataForm.value = props.editType === 'update' ? props.user : {sex: 0, accountStatus: 1};
+    loadRoles();
+  }
 });
 
 const emit = defineEmits(['update:show', 'onConfirm']);
 
 const loadRoles = () => {
-  let param: any = {pageNo: 1, pageSize: 1000, role: {roleName: ''}}
-  reqCommonFeedback(sysRoleApi.listByPage(param), (data: any) => {
-    roleOptions.value = data.rows;
+  let param: any = {pageNo: 1, pageSize: 1000, sysRole: {id: ''}}
+  reqCommonFeedback(roleApi.listByPage(param), (data: any) => {
+    roleOptions.value = data.records;
   });
 }
 

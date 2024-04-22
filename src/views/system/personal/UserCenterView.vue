@@ -106,9 +106,10 @@
       <el-form ref="ucvFormRef" label-width="120px" label-position="right" :rules="rules" :model="editForm">
         <el-form-item prop="avatar" label="修改头像" :auto-upload="false" list-type="picture-card">
           <el-upload ref="upload"
-                     action="/api/system/file/upload"
+                     action="/api/system/file/avatar/upload"
                      list-type="picture-card"
                      drag
+                     :auto-upload="false"
                      :limit="1"
                      :file-list="fileList"
                      :on-exceed="handleExceed"
@@ -171,7 +172,7 @@ import {onMounted, reactive, ref} from "vue";
 import type {FormInstance, UploadRawFile, UploadUserFile, UploadInstance, UploadProps} from 'element-plus';
 import {genFileId} from 'element-plus';
 import {Lock} from "@element-plus/icons-vue";
-import {getDetail, update, doModifyPassword} from "@/api/system/sys-user-api";
+import {getDetail, updateByUser, doModifyPassword} from "@/api/system/sys-user-api";
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
 import {RULE_MOBILE, RULE_EMAIL} from "@/utils/rules-util";
 import {updateUserInfo} from "@/store";
@@ -242,8 +243,16 @@ const initUserDetail = () => {
       let arr = data.avatar.split('/');
       fileList.value.push({
         name: arr[arr.length - 1],
-        url: data.avatar
+        url: `api/system/file/getAvatar?avatar=${data.avatar}`
       });
+      let roleNames = "";
+      data.roleList.map((item: any, index: number) => {
+        roleNames += item.roleName;
+        if (index !== data.roleList.length - 1) {
+          roleNames += ",";
+        }
+      });
+      detailUser.value.roleName = roleNames;
     }
   });
 }
@@ -255,7 +264,7 @@ const initUserDetail = () => {
 const submitForm = (ucvFormRef: any) => {
   ucvFormRef.validate((valid: any) => {
     if (valid) {
-      reqSuccessFeedback(update(editForm.value), '修改成功', () => {
+      reqSuccessFeedback(updateByUser(editForm.value), '修改成功', () => {
         initUserDetail();
       });
     }
@@ -279,7 +288,9 @@ const onModifyPassword = (mpFormRef: any) => {
       };
       reqSuccessFeedback(doModifyPassword(param), '更新成功，即将重新登录', () => {
         logout().then(res => {
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         });
       });
     }

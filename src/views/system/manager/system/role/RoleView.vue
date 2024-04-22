@@ -8,18 +8,18 @@
         <el-input placeholder="角色标识" v-model="pageParam.searchObject.roleKey"/>
       </el-form-item>
       <el-form-item>
-        <el-button :icon="Search" type="primary" @click="loadTableData">搜索</el-button>
-        <el-button :icon="RefreshRight" @click="onResetSearchForm">重置</el-button>
+        <el-button type="primary" @click="loadTableData" :icon="Search">搜索</el-button>
+        <el-button @click="onResetSearchForm" :icon="Refresh">重置</el-button>
       </el-form-item>
     </template>
 
     <template #operate>
-      <el-button :icon="Plus" type="primary" @click="onCreate">添加角色</el-button>
-      <el-button :icon="DeleteFilled" plain type="danger" @click="onDeleteBatch">批量删除</el-button>
+      <el-button type="primary" @click="onCreate" :icon="Plus">添加角色</el-button>
+      <el-button plain type="danger" @click="onDeleteBatch" :icon="DeleteFilled">批量删除</el-button>
     </template>
 
     <template #default>
-      <el-table v-loading="loading" :data="pageVo.records" @selection-change="handleSelectionChange">
+      <el-table v-loading="loading" :data="pageVo.records" style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"/>
         <el-table-column prop="roleName" label="角色名称"/>
         <el-table-column prop="roleKey" label="角色标识"/>
@@ -35,13 +35,16 @@
 
     <template #page>
       <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-                     :total="pageVo.total" :page-size="pageParam.pageSize" :page-sizes=[5,10,15]
-                     @current-change="onPageChange" @size-change="onSizeChange"/>
+                     :total="pageVo.total"
+                     v-model:page-count="pageVo.pageNo"
+                     v-model:page-size="pageParam.pageSize"
+                     :page-sizes=[5,10,15]
+      />
     </template>
 
     <template #form>
       <!-- 权限操作 -->
-      <el-dialog v-model="dialogMenuVisible" title="授予权限" width="50%">
+      <el-dialog v-model="dialogMenuVisible" :title="dialogMenuStatus == 1 ? '赋予菜单' : '授予权限'" width="50%">
         <el-tree v-model:default-checked-keys="defaultSelectMenuIdList"
                  @check-change="checkChange"
                  :data="menuOptions"
@@ -85,11 +88,11 @@
 <script setup lang="ts">
 import {onMounted, nextTick, reactive, ref} from "vue";
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
-import sysRoleApi, {grantPermissionsByRoleId} from "@/api/system/sys-role-api";
+import roleApi, {grantPermissionsByRoleId} from "@/api/system/sys-role-api";
 import {listByTreeAsRoleSelection, listByRoleId} from "@/api/system/sys-menu-api";
 import TableManage from "@/components/container/TableManage.vue";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
-import {DeleteFilled, Plus, RefreshRight, Search} from "@element-plus/icons-vue";
+import {DeleteFilled, Plus, Refresh, Search} from "@element-plus/icons-vue";
 
 // 树形选择框配置
 const defaultProps = {
@@ -100,8 +103,10 @@ const defaultProps = {
 }
 
 const multipleSelection = ref<any[]>([]);
-// 授予菜单对话框
+// 授予 权限/菜单 对话框
 const dialogMenuVisible = ref<boolean>(false);
+// 授予 权限/菜单 对话框标题
+const dialogMenuStatus = ref<number>(0);
 // 默认已选id
 const defaultSelectMenuIdList = ref<string[]>([]);
 // 菜单选项
@@ -135,11 +140,10 @@ const loadTableData = () => {
   let param = {
     pageNo: pageParam.value.pageNo,
     pageSize: pageParam.value.pageSize,
-    role: {roleName: pageParam.value.searchObject.roleName, roleKey: pageParam.value.searchObject.roleKey}
+    sysRole: {roleName: pageParam.value.searchObject.roleName, roleKey: pageParam.value.searchObject.roleKey}
   };
-  reqCommonFeedback(sysRoleApi.listByPage(param), (data: any) => {
-    pageVo.value.records = data.rows;
-    pageVo.value.total = data.recordCount;
+  reqCommonFeedback(roleApi.listByPage(param), (data: any) => {
+    pageVo.value = data;
     loading.value = false;
   });
 }
@@ -149,13 +153,13 @@ const onUpdateFormConfirm = (formEl: any): void => {
     if (valid) {
       if (!editForm.value.id) {
         // 新增
-        reqSuccessFeedback(sysRoleApi.add(editForm.value), '新增成功', () => {
+        reqSuccessFeedback(roleApi.add(editForm.value), '新增成功', () => {
           loadTableData();
           dialogEditVisible.value = false;
         });
       } else {
         // 修改
-        reqSuccessFeedback(sysRoleApi.update(editForm.value), '修改成功', () => {
+        reqSuccessFeedback(roleApi.update(editForm.value), '修改成功', () => {
           loadTableData();
           dialogEditVisible.value = false;
         });
@@ -184,6 +188,7 @@ const dialogConfirm = () => {
  */
 const showDialogMenu = (row: any, t: number) => {
   defaultSelectMenuIdList.value = [];
+  dialogMenuStatus.value = t;
   dialogMenuVisible.value = true;
   selectId.value = row.id;
   getMenus(t, () => {
@@ -198,7 +203,7 @@ const getMenus = (t: number, callback: Function) => {
   let param: any = {
     pageNo: 1,
     pageSize: 1000,
-    menu: {menuName: '', isMenu: t}
+    sysMenu: {isMenu: t}
   }
   reqCommonFeedback(listByTreeAsRoleSelection(param), (data: any) => {
     menuOptions.value = data;
@@ -251,7 +256,7 @@ const onCreate = () => {
 
 const onDeleteBatch = () => {
   let ids: string[] = [];
-  multipleSelection.value.map((item, index) => {
+  multipleSelection.value.map((item) => {
     ids.push(item.id);
   });
   ElMessageBox.confirm('确认删除所选角色?', '提示', {
@@ -260,7 +265,7 @@ const onDeleteBatch = () => {
         type: 'warning',
       }
   ).then(() => {
-    reqCommonFeedback(sysRoleApi.deleteBatch(ids), () => {
+    reqCommonFeedback(roleApi.deleteBatch(ids), () => {
       ElMessage({type: 'success', message: '删除成功'});
       loadTableData();
     });
@@ -269,16 +274,6 @@ const onDeleteBatch = () => {
 
 const handleSelectionChange = (arr: any) => {
   multipleSelection.value = arr;
-}
-
-const onPageChange = (currentPage: number) => {
-  pageParam.value.pageNo = currentPage;
-  nextTick(() => loadTableData());
-}
-
-const onSizeChange = (size: number) => {
-  pageParam.value.pageSize = size;
-  nextTick(() => loadTableData());
 }
 </script>
 

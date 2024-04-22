@@ -31,11 +31,6 @@ const store = useStore();
 
 <!--私有样式-->
 <style scoped>
-.el-aside {
-  overflow-x: hidden;
-  transition: width 200ms;
-}
-
 /* 可以设置不同的进入和离开动画 */
 /* 设置持续时间和动画函数 */
 .slide-fade-enter-active {

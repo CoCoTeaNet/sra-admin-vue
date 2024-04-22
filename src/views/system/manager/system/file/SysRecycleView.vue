@@ -2,29 +2,17 @@
   <table-manage>
     <!-- 表格操作 -->
     <template #search>
-      <el-form-item label="文件名称">
-        <el-input placeholder="文件名称" v-model:model-value="pageParam.searchObject.fileName"/>
-      </el-form-item>
-      <el-form-item label="文件后缀">
-        <el-input placeholder="文件后缀" v-model:model-value="pageParam.searchObject.fileSuffix"/>
-      </el-form-item>
-      <el-form-item label="文件真实路径">
-        <el-input placeholder="文件真实路径" v-model:model-value="pageParam.searchObject.realPath"/>
-      </el-form-item>
-      <el-form-item label="浏览路径">
-        <el-input placeholder="浏览路径" v-model:model-value="pageParam.searchObject.browsePath"/>
-      </el-form-item>
-      <el-form-item label="文件访问地址">
-        <el-input placeholder="文件访问地址" v-model:model-value="pageParam.searchObject.fullPath"/>
-      </el-form-item>
-      <el-form-item label="文件大小（单位：字节）">
-        <el-input placeholder="文件大小（单位：字节）" v-model:model-value="pageParam.searchObject.fileSize"/>
-      </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker v-model="pageParam.searchObject.createTimeRange"
                         type="daterange" range-separator="~"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"/>
+      </el-form-item>
+      <el-form-item label="文件名称">
+        <el-input placeholder="文件名称" v-model:model-value="pageParam.searchObject.fileName"/>
+      </el-form-item>
+      <el-form-item label="文件后缀">
+        <el-input placeholder="文件后缀" v-model:model-value="pageParam.searchObject.fileSuffix"/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" :icon="Search" @click="loadTableData">搜索</el-button>
@@ -34,7 +22,7 @@
 
     <template #operate>
       <el-button type="success" :icon="RefreshLeft" @click="onRecoveryBatch">批量恢复</el-button>
-      <el-button type="danger" :icon="DeleteFilled" @click="onRemoveBatch">批量删除</el-button>
+      <el-button plain type="danger" :icon="DeleteFilled" @click="onRemoveBatch">批量删除</el-button>
     </template>
 
     <!-- 表格视图 -->
@@ -45,11 +33,8 @@
                 v-loading="loading"
                 @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
-        <el-table-column width="200" prop="fileName" label="文件名称"/>
-        <el-table-column prop="fileSuffix" label="文件后缀"/>
-        <el-table-column width="300" prop="realPath" label="文件真实路径"/>
-        <el-table-column width="300" prop="browsePath" label="浏览路径"/>
-        <el-table-column width="300" prop="fullPath" label="文件访问地址"/>
+        <el-table-column prop="fileName" label="文件名称" show-overflow-tooltip/>
+        <el-table-column width="150" prop="fileSuffix" label="文件后缀"/>
         <el-table-column width="150" prop="fileSize" label="文件大小">
           <template #default="scope">
             <span>{{unitUtil.memoryCalculate(scope.row.fileSize)}}</span>
@@ -60,9 +45,8 @@
         <el-table-column prop="updateBy" label="更新人"/>
         <el-table-column width="200" prop="updateTime" label="更新时间"/>
         <!-- 单行操作 -->
-        <el-table-column fixed="right" width="250" label="操作">
+        <el-table-column fixed="right" width="200" label="操作">
           <template #default="scope">
-            <el-button size="small" :icon="Download" @click="onDownload(scope.row)">下载</el-button>
             <el-button size="small" type="success" plain :icon="RefreshLeft" @click="onRecovery(scope.row)">
               恢复
             </el-button>
@@ -124,12 +108,10 @@ const loadTableData = (): void => {
   let param = {
     pageNo: pageParam.value.pageNo,
     pageSize: pageParam.value.pageSize,
-    file: pageParam.value.searchObject
+    sysFile: pageParam.value.searchObject
   };
   reqCommonFeedback(recycleBinPage(param), (data: any) => {
-    pageVo.value.records = data.rows;
-    pageVo.value.total = data.recordCount;
-    pageVo.value.pageSize = data.pageSize;
+    pageVo.value = data;
     loading.value = false;
   });
 }
@@ -165,14 +147,6 @@ const onRemoveBatch = () => {
       loadTableData();
     });
   });
-}
-
-const onDownload = (row: SysFileModel) => {
-  if (row.browsePath) {
-    window.open(row.fullPath, "_blank");
-  } else {
-    ElMessage.info("文件不存在");
-  }
 }
 
 const handleSelectionChange = (row: SysFileModel[]) => {

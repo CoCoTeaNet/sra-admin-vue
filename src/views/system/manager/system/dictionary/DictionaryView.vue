@@ -6,13 +6,13 @@
         <el-input placeholder="字典名称" v-model:model-value="searchObj.dictionaryName"/>
       </el-form-item>
       <el-form-item label="启用状态">
-        <el-select placeholder="选择启用状态" v-model="searchObj.enableStatus">
+        <el-select placeholder="选择启用状态" style="width: 200px" v-model="searchObj.enableStatus">
           <el-option v-for="i in enableStatusList" :label="i.label" :value="i.value"/>
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button :icon="Search" type="primary" @click="loadTableData">搜索</el-button>
-        <el-button :icon="RefreshRight" @click="resetSearchForm">重置</el-button>
+        <el-button type="primary" @click="loadTableData" :icon="Search">搜索</el-button>
+        <el-button @click="resetSearchForm" :icon="Refresh">重置</el-button>
         <el-button @click="onExpandAll">
           <el-icon>
             <arrow-right-bold v-if="!isExpandAll"/>
@@ -24,8 +24,8 @@
     </template>
 
     <template #operate>
-      <el-button :icon="Plus" type="primary" @click="onAdd">添加字典</el-button>
-      <el-button :icon="DeleteFilled" plain type="danger" @click="onDeleteBatch">批量删除</el-button>
+      <el-button type="primary" @click="onAdd" :icon="Plus">添加字典</el-button>
+      <el-button plain type="danger" @click="onDeleteBatch" :icon="DeleteFilled">批量删除</el-button>
     </template>
 
     <!-- 表格视图 -->
@@ -33,19 +33,21 @@
       <el-table v-if="isShowTable" stripe row-key="id" :data="records" v-model:default-expand-all="isExpandAll"
                 @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="80"/>
-        <el-table-column prop="dictionaryName" label="名称" sortable/>
-        <el-table-column prop="remark" label="备注"/>
+        <el-table-column prop="dictionaryName" label="名称" sortable show-overflow-tooltip/>
+        <el-table-column prop="remark" label="备注" show-overflow-tooltip/>
         <el-table-column prop="enableStatus" label="是否启用">
           <template #default="scope">
             <el-tag :type="getConfirm(scope.row.enableStatus, 0)">{{ getConfirm(scope.row.enableStatus, 1) }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="sort" label="排序号" sortable/>
+        <el-table-column prop="createBy" label="创建人" show-overflow-tooltip />
+        <el-table-column prop="createTime" label="创建时间" width="200" />
         <!-- 单行操作 -->
-        <el-table-column fixed="right" width="180" label="操作">
+        <el-table-column fixed="right" width="200" label="操作">
           <template #default="scope">
-            <el-button :icon="Edit" size="small" @click="onEdit(scope.row)">编辑</el-button>
-            <el-button :icon="DeleteFilled" size="small" plain type="danger" @click="onRemove(scope.row)">删除</el-button>
+            <el-button size="small" @click="onEdit(scope.row)" :icon="Edit">编辑</el-button>
+            <el-button size="small" plain type="danger" @click="onRemove(scope.row)" :icon="DeleteFilled">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -95,7 +97,7 @@ import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
 import TableManage from "@/components/container/TableManage.vue";
 import {ElForm} from "element-plus/es";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {DeleteFilled, Edit, Plus, RefreshRight, Search} from "@element-plus/icons-vue";
+import {DeleteFilled, Edit, Plus, Refresh, Search} from "@element-plus/icons-vue";
 
 type FormInstance = InstanceType<typeof ElForm>
 const sttFormRef = ref<FormInstance>();
@@ -160,7 +162,7 @@ const onRemove = (row: DictionaryModel): void => {
 
 const loadTableData = (): void => {
   if (!loading.value) loading.value = true;
-  let param = {dictionary: searchObj.value}
+  let param = {sysDictionary: searchObj.value}
   reqCommonFeedback(listByTree(param), (data: any) => {
     records.value = data;
     loading.value = false;

@@ -2,31 +2,37 @@
   <table-manage>
     <template #search>
       <el-form-item label="日志编号">
-        <el-input placeholder="日志编号" v-model="pageParam.searchObject.logNumber"/>
+        <el-input placeholder="日志编号" v-model="pageParam.searchObject.id"/>
       </el-form-item>
       <el-form-item label="操作人员">
-        <el-input placeholder="操作人员" v-model="pageParam.searchObject.operatorName"/>
+        <el-input placeholder="操作人员" v-model="pageParam.searchObject.operator"/>
       </el-form-item>
       <el-form-item>
-        <el-button :icon="Search" type="primary" @click="loadTableData">搜索</el-button>
-        <el-button :icon="RefreshRight" @click="onReset">重置</el-button>
+        <el-button type="primary" @click="loadTableData" :icon="Search">搜索</el-button>
+        <el-button @click="onReset" :icon="Refresh">重置</el-button>
       </el-form-item>
     </template>
 
     <template #operate>
-      <el-button :icon="DeleteFilled" type="danger" @click="onBatchDelete">批量删除</el-button>
+      <el-button type="danger" @click="onBatchDelete" :icon="DeleteFilled">批量删除</el-button>
     </template>
 
     <template #default>
       <el-table v-loading="loading" :data="pageVo.records" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"/>
-        <el-table-column prop="logNumber" label="日志编号"/>
-        <el-table-column prop="operatorName" label="操作人"/>
-        <el-table-column prop="ipAddress" label="IP地址"/>
-        <el-table-column prop="requestWay" label="请求方式"/>
-        <el-table-column prop="operationStatus" label="操作状态">
+        <el-table-column prop="id" label="日志编号" width="200"/>
+        <el-table-column prop="operator" label="操作人" show-overflow-tooltip>
           <template #default="scope">
-            <el-tag :type="getOperationStatus(scope.row.operationStatus, 0)">{{getOperationStatus(scope.row.operationStatus, 1)}}</el-tag>
+            <el-text>{{`${scope.row.username}@${scope.row.nickname}`}}</el-text>
+          </template>
+        </el-table-column>
+        <el-table-column prop="ipAddress" label="IP地址" show-overflow-tooltip/>
+        <el-table-column prop="requestWay" label="请求方式"/>
+        <el-table-column prop="logStatus" label="操作状态">
+          <template #default="scope">
+            <el-tag :type="getOperationStatus(scope.row.logStatus, 0)">
+              {{getOperationStatus(scope.row.logStatus, 1)}}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="logType" label="日志类型">
@@ -34,10 +40,13 @@
             <el-tag :type="getLogType(scope.row.logType, 0)">{{getLogType(scope.row.logType, 1)}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="operationTime" label="操作时间" width="200"/>
+        <el-table-column prop="createTime" label="操作时间" width="200"/>
+
         <el-table-column fixed="right" label="操作" width="80">
           <template #default="scope">
-            <el-button :icon="DeleteFilled" size="small" type="danger" plain @click="onDelete(scope.row.id)">删除</el-button>
+            <el-button size="small" type="danger" plain @click="onDelete(scope.row.id)" :icon="DeleteFilled">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -45,7 +54,7 @@
 
     <template #page>
       <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-                     :total="pageVo.total" :page-size="pageParam.pageSize" :page-sizes=[5,10,15]
+                     :total="pageVo.total" :page-size="pageParam.pageSize" :page-sizes=[10,20,30]
                      @current-change="onPageChange" @size-change="onSizeChange"/>
     </template>
   </table-manage>
@@ -55,16 +64,16 @@
 import {nextTick, onMounted, ref, watch} from "vue";
 import SraSimpleTable from "@/components/table/simple-table/SraSimpleTable.vue";
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
-import sysOperationLogApi from "@/api/system/sys-operation-log-api";
+import operationLogApi from "@/api/system/sys-log-api";
 import TableManage from "@/components/container/TableManage.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {deleteBatch} from "@/api/system/sys-user-api";
-import {DeleteFilled, RefreshRight, Search} from "@element-plus/icons-vue";
+import {DeleteFilled, Refresh, Search} from "@element-plus/icons-vue";
 
 // 分页参数
-const pageParam = ref<PageParam>({pageNo: 1, pageSize: 15, searchObject: {}});
+const pageParam = ref<PageParam>({pageNo: 1, pageSize: 20, searchObject: {}});
 // api返回的分页数据
-const pageVo = ref<PageVO>({pageNo: 1, pageSize: 15, total: 0, records: []});
+const pageVo = ref<PageVO>({pageNo: 1, pageSize: 20, total: 0, records: []});
 // 加载进度
 const loading = ref<boolean>(true);
 const getLogType: any = (status: number, type: number) => {
@@ -111,7 +120,7 @@ const onReset = (): void => {
 }
 
 const onDelete = (id: string) => {
-  reqSuccessFeedback(sysOperationLogApi.deleteBatch([id]), '删除成功', () => {
+  reqSuccessFeedback(operationLogApi.deleteBatch([id]), '删除成功', () => {
     loadTableData();
   });
 }
@@ -121,25 +130,24 @@ const loadTableData = () => {
   let param = {
     pageNo: pageParam.value.pageNo,
     pageSize: pageParam.value.pageSize,
-    operationLog: pageParam.value.searchObject
+    sysLog: pageParam.value.searchObject
   };
-  reqCommonFeedback(sysOperationLogApi.listByPage(param), (data: any) => {
-    pageVo.value.records = data.rows;
-    pageVo.value.total = data.recordCount;
+  reqCommonFeedback(operationLogApi.listByPage(param), (data: any) => {
+    pageVo.value = data;
     loading.value = false;
   });
 }
 
 const onBatchDelete = () => {
   let ids: string[] = [];
-  multipleSelection.value.map((item, index) => ids.push(item.id));
+  multipleSelection.value.map((item) => ids.push(item.id));
   ElMessageBox.confirm('确认删除所选日志?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }
   ).then(() => {
-    reqCommonFeedback(sysOperationLogApi.deleteBatch(ids), () => {
+    reqCommonFeedback(operationLogApi.deleteBatch(ids), () => {
       ElMessage({type: 'success', message: '删除成功'});
       loadTableData();
     });

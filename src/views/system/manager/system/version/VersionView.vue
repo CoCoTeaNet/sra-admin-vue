@@ -22,12 +22,10 @@
     <template #default>
       <el-table stripe row-key="id" :data="pageVo.records">
         <el-table-column prop="updateNo" label="版本号" width="150" />
-        <el-table-column prop="platformName" label="平台名称" />
-        <el-table-column prop="updateDesc" label="更新描述" width="300" />
-        <el-table-column prop="downloadUrl" label="下载地址" width="250" />
-        <el-table-column prop="createBy" label="创建人" width="150" />
+        <el-table-column prop="platformName" label="平台名称" show-overflow-tooltip />
+        <el-table-column prop="updateDesc" label="更新描述" width="300"  />
+        <el-table-column prop="downloadUrl" label="下载地址" width="250" show-overflow-tooltip />
         <el-table-column prop="createTime" label="创建时间" width="200" />
-        <el-table-column prop="updateBy" label="更新人" width="150" />
         <el-table-column prop="updateTime" label="更新时间" width="200" />
         <!-- 单行操作 -->
         <el-table-column fixed="right" width="180" label="操作">
@@ -132,12 +130,10 @@ const loadTableData = (): void => {
   let param = {
     pageNo: pageParam.value.pageNo,
     pageSize: pageParam.value.pageSize,
-    version: pageParam.value.searchObject
+    sysVersion: pageParam.value.searchObject
   };
   reqCommonFeedback(listByPage(param), (data: any) => {
-    pageVo.value.records = data.rows;
-    pageVo.value.total = data.recordCount;
-    pageVo.value.pageSize = data.pageSize;
+    pageVo.value = data;
     loading.value = false;
   });
 }

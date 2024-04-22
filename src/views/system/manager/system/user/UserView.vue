@@ -11,12 +11,12 @@
         <el-input placeholder="邮箱" v-model="pageParam.searchObject.email"/>
       </el-form-item>
       <el-form-item label="用户性别">
-        <el-select placeholder="选择性别" v-model="pageParam.searchObject.sex">
+        <el-select placeholder="选择性别" style="width: 200px" v-model="pageParam.searchObject.sex">
           <el-option v-for="i in sexList" :label="i.label" :value="i.value"/>
         </el-select>
       </el-form-item>
       <el-form-item label="账号状态">
-        <el-select placeholder="选择状态" v-model="pageParam.searchObject.accountStatus">
+        <el-select placeholder="选择状态" style="width: 200px" v-model="pageParam.searchObject.accountStatus">
           <el-option v-for="i in accountStatusList" :label="i.label" :value="i.value"/>
         </el-select>
       </el-form-item>
@@ -32,11 +32,19 @@
     </template>
 
     <template #default>
-      <el-table v-loading="loading" :data="pageVo.records" @selection-change="handleSelectionChange">
+      <el-table v-loading="loading" :data="pageVo.records" style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"/>
         <el-table-column prop="username" width="200" label="账号"/>
         <el-table-column prop="nickname" width="200" label="昵称"/>
-        <el-table-column prop="roleName" width="220" label="角色"/>
+        <el-table-column prop="roleList" width="220" label="角色">
+          <template #default="scope">
+            <span style="display: flex;flex-wrap: wrap;">
+              <el-tag v-for="(role, index) in scope.row.roleList" :key="index" style="margin-right: 0.5rem">
+                {{role.roleName}}
+              </el-tag>
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column prop="sex" label="性别">
           <template #default="scope">
             <el-tag :type="getSex(scope.row.sex, 0)">
@@ -150,7 +158,9 @@ const getSex: any = (status: number, type: number) => {
 
 const onEdit = (row: UserModel): void => {
   formShow.value = true;
-  row.roleIds = row.roleId?.split(",");
+  let roleIds:any = [];
+  row.roleList?.map(item => roleIds.push(item.id));
+  row.roleIds = roleIds;
   editUser.value = row;
   editType.value = 'update';
 }
@@ -160,11 +170,10 @@ const loadTableData = () => {
   let param = {
     pageNo: pageParam.value.pageNo,
     pageSize: pageParam.value.pageSize,
-    user: pageParam.value.searchObject
+    sysUser: pageParam.value.searchObject
   };
   reqCommonFeedback(listByPage(param), (data: any) => {
-    pageVo.value.records = data.rows;
-    pageVo.value.total = data.recordCount;
+    pageVo.value = data;
     loading.value = false;
   });
 }
@@ -204,9 +213,7 @@ const onDelete = (id: string) => {
 
 const onDeleteBatch = () => {
   let ids: string[] = [];
-  multipleSelection.value.map((item, index) => {
-    ids.push(item.id);
-  });
+  multipleSelection.value.map((item) => ids.push(item.id));
   ElMessageBox.confirm('确认删除所选用户?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

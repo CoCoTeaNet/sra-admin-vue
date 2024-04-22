@@ -13,3 +13,10 @@ export function getCount() {
 export function getSystemInfo() {
     return request('system/dashboard/getSystemInfo', {}, 'GET');
 }
+
+/**
+ * 获取RSS运行状态
+ */
+export function getRssWorkStatus() {
+    return request('system/dashboard/getRssWorkStatus', {}, 'GET');
+}

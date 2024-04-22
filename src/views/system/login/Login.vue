@@ -1,45 +1,52 @@
 <template>
-  <div class="login">
-    <el-card shadow="always" style="width: 366px">
-      <h2 style="text-align: center">
-        <img :src="require('@/assets/account-logo.png')" style="width: 210px" alt="login-logo">
-      </h2>
+  <el-row class="a-login">
+    <div class="a-login-inner">
+      <div class="a-login-left">
+        <h2 style="text-align: center; color: #fff; ">
+          ~Welcome to SRA-ADMIN~
+        </h2>
+      </div>
+      <el-card class="a-login-right" shadow="always">
+        <h2 style="text-align: center; padding-bottom: 16px;">
+          欢 迎 登 录
+        </h2>
 
-      <el-form ref="loginFormRef" :model="loginForm" status-icon :rules="rules" size="large">
-        <el-form-item prop="username">
-          <el-input placeholder="账号" :prefix-icon="UserFilled" v-model="loginForm.username"
-                    autocomplete="off">
-          </el-input>
-        </el-form-item>
+        <el-form ref="loginFormRef" :model="loginForm" status-icon :rules="rules" size="large">
+          <el-form-item prop="username">
+            <el-input placeholder="账号" :prefix-icon="UserFilled" v-model="loginForm.username"
+                      autocomplete="off">
+            </el-input>
+          </el-form-item>
 
-        <el-form-item prop="password">
-          <el-input placeholder="密码" :prefix-icon="Lock" v-model="loginForm.password"
-                    @keypress.enter="submitForm(loginFormRef)"
-                    type="password"
-                    autocomplete="off">
-          </el-input>
-        </el-form-item>
+          <el-form-item prop="password">
+            <el-input placeholder="密码" :prefix-icon="Lock" v-model="loginForm.password"
+                      @keypress.enter="submitForm(loginFormRef)"
+                      type="password"
+                      autocomplete="off">
+            </el-input>
+          </el-form-item>
 
-        <el-form-item prop="captcha">
-          <el-input style="width: 75%;" placeholder="验证码" :prefix-icon="Connection"
-                    @keypress.enter="submitForm(loginFormRef)"
-                    v-model="loginForm.captcha">
-          </el-input>
-          <el-image @click="getVerifyCodeImage" style="width: 25%;cursor: pointer" :src="captcha"/>
-        </el-form-item>
+          <el-form-item prop="captcha">
+            <el-input style="width: 75%;" placeholder="验证码" :prefix-icon="Connection"
+                      @keydown.enter="submitForm(loginFormRef)"
+                      v-model="loginForm.captcha">
+            </el-input>
+            <el-image @click="getVerifyCodeImage" style="width: 25%;cursor: pointer" :src="captcha"/>
+          </el-form-item>
 
-        <el-form-item>
-          <el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
-        </el-form-item>
+          <el-form-item>
+            <el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
+          </el-form-item>
 
-        <el-form-item>
-          <el-button style="width: 100%" type="primary" @click="submitForm(loginFormRef)" :loading="loading">
-            登录
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
-  </div>
+          <el-form-item>
+            <el-button style="width: 100%" type="primary" @click="submitForm(loginFormRef)" :loading="loading">
+              登录
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </div>
+  </el-row>
 </template>
 
 <script setup lang="ts">
@@ -50,6 +57,8 @@ import {getCaptcha, login} from "@/api/system/sys-login-api";
 import {ElMessage} from "element-plus";
 import {setUserInfo} from "@/store";
 import {useRouter, useRoute} from "vue-router";
+import 'element-plus/theme-chalk/display.css'
+import {ApiResultEnum} from "@/api/ApiResultEnum";
 
 const router = useRouter();
 const route = useRoute();
@@ -65,10 +74,10 @@ const captcha = ref<string>('');
 
 // 表单对象
 const loginForm = reactive({
-  username: 'admin',
-  password: 'srapwd',
+  username: '',
+  password: '',
   captcha: '',
-  rememberMe: false
+  rememberMe: true
 });
 
 // 表单校验规则
@@ -87,7 +96,7 @@ onMounted(() => {
  */
 const getVerifyCodeImage = () => {
   getCaptcha({codeType: "LOGIN"}).then((res: any) => {
-    if (res.code === 200) {
+    if (res.code === ApiResultEnum.SUCCESS) {
       captcha.value = `data:image/jpeg;base64,${res.data}`;
     }
   });
@@ -103,18 +112,19 @@ const submitForm = (formEl: FormInstance | undefined) => {
     if (valid) {
       loading.value = true;
       login(loginForm).then((res: any) => {
-        if (res.code === 200) {
-          router.push({
-            path: route.query.redirect ? decodeURIComponent(`${route.query.redirect}`) : '/admin/home'
-          });
+        if (res.code === ApiResultEnum.SUCCESS) {
+          if (route.query.redirect) {
+            if (route.query.redirect) {
+              router.push({name: route.query.redirect + ''});
+            }
+          } else {
+            router.push({name: 'Home'});
+          }
         } else {
           ElMessage.error(!res.data ? res.message : res.data);
           getVerifyCodeImage();
         }
         loading.value = false;
-      }).catch(e => {
-        ElMessage.warning({message: "服务未启动或者升级中", duration: 2000});
-        console.log('api异常：' + e);
       });
     } else {
       console.log('error submit!');
@@ -124,4 +134,4 @@ const submitForm = (formEl: FormInstance | undefined) => {
 }
 </script>
 
-<style scoped src="./css/Login.css"></style>
+<style scoped src="./Login.css"></style>

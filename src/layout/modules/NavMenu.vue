@@ -5,7 +5,8 @@
            :unique-opened="true">
     <!-- LOGO -->
     <div v-if="!store.state.isCollapseMenu" class="logo">
-      <img :src="require('@/assets/account-logo.png')" style="width: 190px;padding: 1em" alt="login-logo">
+      <img :src="require('@/assets/logo.png')" style="width: 36px;margin-right: 3px" alt="login-logo">
+      <h2>SRA-ADMIN</h2>
     </div>
     <div v-else style="width: 100%;cursor: pointer;display: flex;justify-content: center;margin-top: 1em">
       <img :src="require('@/assets/logo.png')" style="width: 36px" alt="logo">
@@ -80,5 +81,6 @@ const dfs = (root: MenuModel, path: string, stack: Array<string>) => {
   justify-content: center;
   align-items: center;
   color: rgb(55, 76, 82);
+  padding: 1em 2em 1em 1.5em;
 }
 </style>

@@ -7,8 +7,8 @@
           <el-input placeholder="权限名称" v-model:model-value="searchObj.menuName"/>
         </el-form-item>
       </el-form>
-      <el-button :icon="Search" type="primary" @click="loadTableData">搜索</el-button>
-      <el-button :icon="RefreshRight" @click="resetSearchForm">重置</el-button>
+      <el-button type="primary" @click="loadTableData" :icon="Search">搜索</el-button>
+      <el-button @click="resetSearchForm" :icon="Refresh">重置</el-button>
       <el-button @click="onExpandAll">
         <el-icon>
           <arrow-right-bold v-if="!isExpandAll"/>
@@ -19,24 +19,27 @@
     </template>
 
     <template #operate>
-      <el-button :icon="Plus" type="primary" @click="onAdd">添加权限</el-button>
-      <el-button :icon="DeleteFilled" plain type="danger" @click="onDeleteBatch">批量删除</el-button>
+      <el-button type="primary" @click="onAdd" :icon="Plus">添加权限</el-button>
+      <el-button plain type="danger" @click="onDeleteBatch" :icon="DeleteFilled">批量删除</el-button>
     </template>
 
     <!-- 表格视图 -->
     <template #default>
-      <el-table v-if="isShowTable" stripe row-key="id" :data="records" v-model:default-expand-all="isExpandAll"  @selection-change="handleSelectionChange">
+      <el-table v-if="isShowTable" stripe row-key="id" :data="records" v-model:default-expand-all="isExpandAll"
+                @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="80"/>
         <el-table-column prop="menuName" width="300" label="权限名称"/>
-        <el-table-column prop="permissionCode" width="500" label="权限编号"/>
-        <el-table-column prop="sort" label="显示顺序" sortable/>
+        <el-table-column prop="permissionCode" width="400" label="权限编号"/>
+        <el-table-column prop="sort" width="200" label="显示顺序" sortable/>
         <el-table-column prop="createTime" width="200" label="创建时间"/>
         <el-table-column prop="updateTime" width="200" label="更新时间"/>
         <!-- 单行操作 -->
-        <el-table-column fixed="right" width="180" label="操作">
+        <el-table-column fixed="right" width="200" label="操作">
           <template #default="scope">
-            <el-button :icon="Edit" size="small" @click="onEdit(scope.row)">编辑</el-button>
-            <el-button :icon="DeleteFilled" size="small" plain type="danger" @click="onRemove(scope.row)">删除</el-button>
+            <el-button size="small" @click="onEdit(scope.row)" :icon="Edit">编辑</el-button>
+            <el-button size="small" plain type="danger" @click="onRemove(scope.row)" :icon="DeleteFilled">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -87,7 +90,7 @@ import TableManage from "@/components/container/TableManage.vue";
 import {ElForm} from "element-plus/es";
 import {ElMessage, ElMessageBox} from "element-plus";
 import listUtil from "@/utils/list-util";
-import {DeleteFilled, Edit, Plus, RefreshRight, Search} from "@element-plus/icons-vue";
+import {DeleteFilled, Edit, Plus, Refresh, Search} from "@element-plus/icons-vue";
 
 type FormInstance = InstanceType<typeof ElForm>
 const sttFormRef = ref<FormInstance>();
@@ -147,7 +150,12 @@ const onRemove = (row: MenuModel): void => {
 
 const loadTableData = (): void => {
   if (!loading.value) loading.value = true;
-  let param = {menu: {isMenu: 0, menuName: searchObj.value.menuName}};
+  let param = {
+    sysMenu: {
+      isMenu: 0,
+      menuName: searchObj.value.menuName
+    }
+  };
   reqCommonFeedback(listByTree(param), (data: any) => {
     listUtil.treeMap(data, (item: { disabled: boolean; menuType: number; }) => item.disabled = (item.menuType != 0));
     records.value = data;
@@ -191,7 +199,7 @@ const onExpandAll = () => {
 }
 
 const resetSearchForm = () => {
-  searchObj.value.menuName = '';
+  searchObj.value = {};
 }
 
 const handleSelectionChange = (arr: any) => {

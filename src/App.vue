@@ -10,73 +10,27 @@ if (userInfo) {
 </script>
 
 <template>
-  <base-layout/>
+  <div class="base-layout">
+    <el-scrollbar>
+      <base-layout/>
+    </el-scrollbar>
+  </div>
 </template>
 
 <style>
-html, body, #app {
+div, h2, html, body {
   margin: 0;
   padding: 0;
+  font-family: Noto Sans, Noto Sans HK, Noto Sans JP, Noto Sans KR, Noto Sans SC, Noto Sans TC, sans-serif;
 }
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.app-background {
+  width: 100%;
+  height: 100%;
+  position: fixed;
 }
 
-
-.status-tag-red, .status-tag-green, .status-tag-blue {
-  color: white;
-  border-radius: 3px;
-  padding: 0.25em 1em;
-  font-size: 12px;
-}
-
-.status-tag-red {
-  background: #f56c6c;
-  border: 1px solid #f56c6c;
-}
-
-.status-tag-green {
-  background: #67c23a;
-  border: 1px solid #67c23a;
-}
-
-.status-tag-blue {
-  background: dodgerblue;
-  border: 1px solid dodgerblue;
-}
-
-
-.status-tag-green-text, .status-tag-blue-text, .status-tag-yellow-text, .status-tag-red-text, .status-tag-gray-text {
-  border-radius: 3px;
-  padding: 0.25em 1em;
-  font-size: 12px;
-}
-
-.status-tag-green-text {
-  color: #67c23a;
-  border: 1px solid #67c23a;
-}
-
-.status-tag-blue-text {
-  color: dodgerblue;
-  border: 1px solid dodgerblue;
-}
-
-.status-tag-yellow-text {
-  color: yellow;
-  border: 1px solid yellow;
-}
-
-.status-tag-red-text {
-  color: #f56c6c;
-  border: 1px solid #f56c6c;
-}
-
-.status-tag-gray-text {
-  color: gray;
-  border: 1px solid gray;
+p {
+  font-weight: 500;
 }
 </style>

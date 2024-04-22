@@ -10,7 +10,7 @@
           <span>{{ item.menuName }}</span>
         </template>
         <!-- 递归渲染子菜单 -->
-        <child-menu :menu-list="item.children"/>
+        <child-menu :menu-list="item.children ? item.children : []"/>
       </el-sub-menu>
 
       <el-menu-item v-if="!hasChildren(item)" @click="onClickMenu(item)" :index="item.id">
