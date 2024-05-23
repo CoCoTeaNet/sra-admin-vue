@@ -121,14 +121,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
             router.push({name: 'Home'});
           }
         } else {
-          ElMessage.error(!res.data ? res.message : res.data);
+          ElMessage.error(res.message);
           getVerifyCodeImage();
         }
         loading.value = false;
       });
-    } else {
-      console.log('error submit!');
-      return false;
     }
   });
 }
