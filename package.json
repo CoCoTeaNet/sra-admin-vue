@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "bk": "vue-cli-service serve --mode devbk",
     "build": "vue-cli-service build"
   },
   "dependencies": {
@@ -12,12 +11,8 @@
     "@types/file-saver": "^2.0.5",
     "@types/node": "^17.0.19",
     "@vueuse/core": "^9.13.0",
-    "@wangeditor/editor": "^5.1.14",
-    "@wangeditor/editor-for-vue": "^5.1.12",
     "axios": "^0.26.0",
     "core-js": "^3.8.3",
-    "dplayer": "^1.27.1",
-    "echarts": "^5.3.0",
     "element-plus": "^2.6.3",
     "file-saver": "^2.0.5",
     "js-md5": "^0.7.3",
