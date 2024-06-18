@@ -1,6 +1,6 @@
 {
   "name": "sra-admin-vue",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -16,6 +16,7 @@
     "element-plus": "^2.6.3",
     "file-saver": "^2.0.5",
     "js-md5": "^0.7.3",
+    "sm-crypto": "^0.3.13",
     "vue": "^3.2.32",
     "vue-axios": "^3.4.1",
     "vue-class-component": "^8.0.0-0",
