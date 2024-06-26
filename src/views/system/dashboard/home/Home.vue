@@ -30,8 +30,8 @@
         </template>
         <p>QQ技术交流群：543112505</p>
         <p>Gitee：<a href="https://gitee.com/momoljw">https://gitee.com/momoljw</a></p>
-        <p>GitHub：<a href="https://github.com/momofoolish">https://github.com/momofoolish</a></p>
-        <p>博客：<a href="https://live1024.cn">https://live1024.cn</a></p>
+        <p>GitHub：<a href="https://github.com/CoCoTeaNet">https://github.com/momofoolish</a></p>
+        <p>BLOG：<a href="https://my.oschina.net/CoCoTea">https://live1024.cn</a></p>
       </el-card>
     </el-col>
   </el-row>
