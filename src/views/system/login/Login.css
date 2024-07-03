@@ -8,14 +8,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: -webkit-linear-gradient(315deg, #42d392 25%, #647eff);
+    background: -webkit-linear-gradient(300deg, #ecf5ff 25%, #fafcff);
 }
 
 .a-login-inner {
     margin: 0 auto;
     display: flex;
-    width: 60%;
-    height: 60%;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.50);
     padding: 72px;
@@ -24,6 +22,7 @@
 
 .a-login-left {
     flex: 1;
+    margin-right: 16px;
 }
 .a-login-right {
     width: 366px;
@@ -31,11 +30,10 @@
 
 @media screen and (max-width: 1439px) {
     .a-login-inner {
-      width: 100%;
       border-radius: 0;
-      height: 70%;
     }
 }
+
 @media screen and (max-width: 1023px) {
     .a-login-inner {
         background: none;
@@ -51,6 +49,7 @@
         width: 366px;
     }
 }
+
 @media screen and (max-width: 767px) {
     .a-login-right {
         width: 90%;
