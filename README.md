@@ -1,5 +1,10 @@
 # SRA-ADMIN-VUE
 
+## 预备环境
+以下是SRA-ADMIN服务端：
+1. sra-admin（springboot3版本）：https://gitee.com/momoljw/sss-rbac-admin
+2. sra-admin-solon（solon版本）：https://gitee.com/momoljw/sra-admin-solon
+
 ## Project setup（安装依赖）
 ```
 yarn install
