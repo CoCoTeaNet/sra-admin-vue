@@ -3,7 +3,7 @@
     <div class="a-login-inner">
       <div class="a-login-left">
         <h2 style="text-align: center; color: #fff; ">
-          ~Welcome to SRA-ADMIN~
+          ~Welcome to SraAdmin~
         </h2>
       </div>
       <el-card class="a-login-right" shadow="always">
@@ -58,8 +58,9 @@ import {getCaptcha, login} from "@/api/system/sys-login-api";
 import {useRoute, useRouter} from "vue-router";
 import 'element-plus/theme-chalk/display.css';
 import {ApiResultEnum} from "@/api/ApiResultEnum";
+import {getSm2} from '@/utils/smUtil';
 
-const sm2 = require('sm-crypto').sm2;
+const sm2 = getSm2();
 const router = useRouter();
 const route = useRoute();
 

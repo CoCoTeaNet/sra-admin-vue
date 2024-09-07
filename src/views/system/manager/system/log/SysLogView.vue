@@ -62,13 +62,11 @@
 </template>
 
 <script setup lang="ts">
-import {nextTick, onMounted, ref, watch} from "vue";
-import SraSimpleTable from "@/components/table/simple-table/SraSimpleTable.vue";
+import {nextTick, onMounted, ref} from "vue";
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
 import operationLogApi from "@/api/system/sys-log-api";
 import TableManage from "@/components/container/TableManage.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {deleteBatch} from "@/api/system/sys-user-api";
 import {DeleteFilled, Refresh, Search} from "@element-plus/icons-vue";
 
 // 分页参数

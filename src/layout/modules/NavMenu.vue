@@ -6,11 +6,11 @@
            :unique-opened="true">
     <!-- LOGO -->
     <div v-if="!store.state.isCollapseMenu" class="logo">
-      <img :src="require('@/assets/logo.png')" style="width: 36px;margin-right: 3px" alt="login-logo">
-      <h3>SRA-ADMIN</h3>
+      <img src="@/assets/logo.png" style="width: 36px;margin-right: 3px" alt="login-logo">
+      <h3>SraAdmin</h3>
     </div>
     <div v-else style="width: 100%;cursor: pointer;display: flex;justify-content: center;margin-top: 1em">
-      <img :src="require('@/assets/logo.png')" style="width: 36px" alt="logo">
+      <img src="@/assets/logo.png" style="width: 36px" alt="logo">
     </div>
     <!-- 菜单渲染 -->
     <child-menu :menu-list="store.state.userInfo.menuList"/>
