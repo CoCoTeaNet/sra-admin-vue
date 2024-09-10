@@ -22,7 +22,8 @@
         </el-icon>
         <el-dropdown>
           <span class="mouse-over">
-            <el-avatar shape="square" :src="`api/system/file/getAvatar?avatar=${url}`"></el-avatar>
+            <el-avatar v-if="store.state.userInfo.avatar" shape="square" :src="`api/system/file/getAvatar?avatar=${store.state.userInfo.avatar}`"/>
+            <el-avatar v-else shape="square" src="@/assets/svg-source/default-avatar.svg"/>
           </span>
           <template #dropdown>
             <el-dropdown-menu>
@@ -48,8 +49,6 @@ import {onMounted, ref} from 'vue';
 
 const store = useStore();
 const route = useRoute();
-
-const url = store.state.userInfo.avatar ? store.state.userInfo.avatar : require('@/assets/svg-source/default-avatar.svg');
 
 const iconSize = ref<number>(24);
 
