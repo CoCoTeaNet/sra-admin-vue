@@ -1,15 +1,17 @@
 <template>
   <el-row align="middle" class="header-row">
     <el-col :span="20" style="display: flex">
-      <el-button link @click="setCollapseMenu">
-        <template #icon>
-          <el-icon class="mouse-over right-item" :size="iconSize">
-            <expand v-if="store.state.isCollapseMenu"/>
-            <fold v-else/>
-          </el-icon>
-        </template>
-      </el-button>
-      <admin-tab/>
+      <el-space>
+        <el-button link @click="setCollapseMenu">
+          <template #icon>
+            <el-icon class="mouse-over right-item" :size="iconSize">
+              <expand v-if="store.state.isCollapseMenu"/>
+              <fold v-else/>
+            </el-icon>
+          </template>
+        </el-button>
+        <admin-tab/>
+      </el-space>
     </el-col>
     <!-- 用户信息 -->
     <el-col :span="4">

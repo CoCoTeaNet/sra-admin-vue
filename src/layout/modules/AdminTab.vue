@@ -83,10 +83,10 @@ const refresh = () => {
   justify-content: center;
   height: 23px;
   margin: 3px;
-  padding: 0 3px;
+  padding: 0 1em;
   text-align: center;
   background: var(--el-color-white);
-  box-shadow: var(--el-box-shadow-lighter);
+  border: 1px solid var(--el-border-color);
   border-radius: 2px;
   color: var(--el-color-primary);
   /* 过渡效果设置 */
