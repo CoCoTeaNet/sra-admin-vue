@@ -24,8 +24,7 @@
         </el-icon>
         <el-dropdown>
           <span class="mouse-over">
-            <el-avatar v-if="store.state.userInfo.avatar" shape="square" :src="`api/system/file/getAvatar?avatar=${store.state.userInfo.avatar}`"/>
-            <el-avatar v-else shape="square" src="@/assets/svg-source/default-avatar.svg"/>
+            <el-avatar v-if="store.state.userInfo.avatar" shape="square" :src="avatar"/>
           </span>
           <template #dropdown>
             <el-dropdown-menu>
@@ -47,12 +46,14 @@ import {loginInfo, logout} from "@/api/system/sys-login-api";
 import {setUserInfo, useStore, setCollapseMenu} from "@/store";
 import AdminTab from "@/layout/modules/AdminTab.vue";
 import {Expand, Fold, FullScreen, House} from "@element-plus/icons-vue";
-import {onMounted, ref} from 'vue';
+import {onMounted, ref, watch} from 'vue';
+import default_avatar from "@/assets/svg-source/default-avatar.svg";
 
 const store = useStore();
 const route = useRoute();
 
-const iconSize = ref<number>(24);
+const iconSize = ref<number>(26);
+const avatar = ref<any>(default_avatar);
 
 onMounted(() => {
   reqCommonFeedback(loginInfo(), (data:any) => setUserInfo(data));
@@ -86,13 +87,18 @@ const doFullScreen = (event: { exitFullscreen: () => void; }) => {
     document.documentElement.requestFullscreen()
   }
 }
+
+watch(()=>store.state.userInfo, (userinfo) => {
+  let avatarJpg = userinfo.avatar;
+  if (avatarJpg) {
+    avatar.value = `api/system/file/getAvatar?avatar=${avatarJpg}`;
+  }
+});
 </script>
 
 <style>
 .header-row {
   height: 63px;
-  border-radius: 4px;
-  padding: 3px 0;
 }
 
 .mouse-over {

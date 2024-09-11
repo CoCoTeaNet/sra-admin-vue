@@ -19,7 +19,7 @@ export const routes = [
     {
         path: "/login",
         name: "Login",
-        meta: {title: 'Welcome to SRA-ADMIN'},
+        meta: {title: 'Welcome to SraAdmin'},
         component: Login
     },
     {

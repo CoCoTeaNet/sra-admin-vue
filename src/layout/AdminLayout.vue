@@ -24,9 +24,6 @@
 <script setup lang="ts">
 import NavMenu from "./modules/NavMenu.vue";
 import AdminHeader from "./modules/AdminHeader.vue";
-import {useStore} from "@/store";
-
-const store = useStore();
 </script>
 
 <!--私有样式-->
@@ -49,7 +46,7 @@ const store = useStore();
 
 <style>
 .layout-box-shadow {
-  box-shadow: var(--el-box-shadow-lighter);
-  background-color: var(--el-menu-bg-color);
+  border-bottom: 1px solid var(--el-border-color);
+  box-shadow: var(--el-box-shadow-light);
 }
 </style>

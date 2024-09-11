@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import {Close} from "@element-plus/icons-vue";
+import {ArrowDown, Close} from "@element-plus/icons-vue";
 import {router} from "@/router";
 import {useRoute} from "vue-router";
 import {useStore, addTabItem} from "@/store";
@@ -83,12 +83,12 @@ const refresh = () => {
   justify-content: center;
   height: 23px;
   margin: 3px;
-  padding: 0 1em;
+  padding: 0 0.8em;
   text-align: center;
   background: var(--el-color-white);
   border: 1px solid var(--el-border-color);
-  border-radius: 2px;
-  color: var(--el-color-primary);
+  border-radius: 3px;
+  color: var(--el-button-text-color);
   /* 过渡效果设置 */
   transition: all 0.3s ease-in-out;
 }
