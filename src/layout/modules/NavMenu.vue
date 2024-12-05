@@ -2,10 +2,10 @@
   <el-menu class="new-el-menu--sidebar"
            :default-active="menuState.defaultActive"
            :default-openeds="menuState.defaultOpened"
-           :collapse="store.state.isCollapseMenu"
+           :collapse="menuStore.isCollapseMenu"
            :unique-opened="true">
     <!-- LOGO -->
-    <div v-if="!store.state.isCollapseMenu" class="logo">
+    <div v-if="!menuStore.isCollapseMenu" class="logo">
       <img src="@/assets/logo.png" style="width: 36px;margin-right: 3px" alt="login-logo">
       <h3>SraAdmin</h3>
     </div>
@@ -13,17 +13,19 @@
       <img src="@/assets/logo.png" style="width: 36px" alt="logo">
     </div>
     <!-- 菜单渲染 -->
-    <child-menu :menu-list="store.state.userInfo.menuList"/>
+    <child-menu :menu-list="userStore.userinfo.menuList"/>
   </el-menu>
 </template>
 
 <script setup lang="ts">
-import {useStore} from "@/store";
 import {useRoute} from "vue-router";
 import {computed} from "vue";
 import ChildMenu from "@/layout/modules/ChildMenu.vue";
+import {useUserStore} from "@/stores/user.ts";
+import {useMenuStore} from "@/stores/menu.ts";
 
-const store = useStore();
+const userStore = useUserStore();
+const menuStore = useMenuStore();
 const route = useRoute();
 
 /**
@@ -31,7 +33,7 @@ const route = useRoute();
  */
 let menuState = computed(() => {
   const path = route.path;
-  const routes = store.state.userInfo.menuList;
+  const routes = userStore.userinfo.menuList;
   let state = {defaultOpened: [""], defaultActive: ""};
   if (routes) {
     let stack: Array<string> = [];

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import BaseLayout from "@/layout/BaseLayout.vue";
-import {setUserInfo} from "./store";
+import {useUserStore} from "@/stores/user.ts";
+const userStore = useUserStore();
 
 // 读取缓存，以免用户F5刷新登录失效
 let userInfo = JSON.parse(`${localStorage.getItem("userInfo")}`);
 if (userInfo) {
-  setUserInfo(userInfo);
+  userStore.setUserInfo(userInfo);
 }
 </script>
 

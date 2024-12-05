@@ -28,16 +28,16 @@
 
 <script lang="ts" setup>
 import {router} from "@/router";
-import {addTabItem, useStore} from "@/store";
+import {useMenuStore} from "@/stores/menu.ts";
+
+const menuStore = useMenuStore();
 
 defineProps<{
   menuList: MenuModel[]
 }>();
 
-const store = useStore();
-
-const hasChildren = (m: MenuModel) => {
-  return m.children && m.children.length > 0;
+const hasChildren = (menu: MenuModel) => {
+  return menu.children && menu.children.length > 0;
 }
 
 const onClickMenu = (item: any) => {
@@ -45,7 +45,7 @@ const onClickMenu = (item: any) => {
     window.open(item.routerPath, '_blank');
   } else {
     router.push({path: item.routerPath});
-    addTabItem({name: item.menuName, url: item.routerPath, isActive: true});
+    menuStore.addTabItem({name: item.menuName, url: item.routerPath, isActive: true});
   }
 }
 </script>

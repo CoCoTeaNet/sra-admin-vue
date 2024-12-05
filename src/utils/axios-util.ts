@@ -1,10 +1,11 @@
 import axios from "axios";
-import {store} from "@/store";
 import {ApiResultEnum} from "@/api/ApiResultEnum";
 import {router} from "@/router";
+import {useUserStore} from "@/stores/user.ts";
+
+const userStore = useUserStore();
 
 export const post = 'POST';
-
 export const get = 'GET';
 
 /**
@@ -58,8 +59,8 @@ export async function request(url: string, data: any, method: any): Promise<any>
         }
     }
 
-    if (store.state.userInfo.token) {
-        config.headers["sa-token"] = store.state.userInfo.token;
+    if (userStore.userinfo.token) {
+        config.headers["sa-token"] = userStore.userinfo.token;
     }
 
     let res: any = await axios.request(config);
@@ -81,7 +82,7 @@ export async function requestFile(url: string, data: any, method: any): Promise<
             headers: {
                 "X-Requested-With": "XMLHttpRequest",
                 "Content-Type": 'application/json;charset=utf-8',
-                "sa-token": store.state.userInfo.token ? store.state.userInfo.token : 'sa-token'
+                "sa-token": userStore.userinfo.token ? userStore.userinfo.token : 'sa-token'
             },
             // `params` 是即将与请求一起发送的 URL 参数
             params: method === 'GET' ? data : '',

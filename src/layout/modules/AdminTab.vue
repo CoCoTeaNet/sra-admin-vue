@@ -2,9 +2,9 @@
   <div style="display: flex">
     <el-scrollbar>
       <div class="scrollbar-flex-content">
-        <p v-for="item in store.state.tabItems" :key="item" :class="`scrollbar-tab-item ${item.isActive?'active':''}`">
+        <p v-for="item in menuStore.tabItems" :key="item" :class="`scrollbar-tab-item ${item.isActive?'active':''}`">
           <span @click="onClick(item)">{{ item.name }}</span>
-          <el-icon class="tab-icon" @click="removeTabItem(item.id)">
+          <el-icon class="tab-icon" @click="menuStore.removeTabItem(item.id)">
             <close/>
           </el-icon>
         </p>
@@ -30,26 +30,25 @@
 import {ArrowDown, Close} from "@element-plus/icons-vue";
 import {router} from "@/router";
 import {useRoute} from "vue-router";
-import {useStore, addTabItem} from "@/store";
-import {removeTabItem,initTabItems} from "@/store";
 import {onMounted} from "vue";
+import {useMenuStore} from "@/stores/menu.ts";
 
-const store = useStore();
+const menuStore = useMenuStore();
 const route = useRoute();
 
 onMounted(() => {
-  addTabItem({name: JSON.parse(JSON.stringify(route.meta)).title, url: route.path, isActive: true});
+  menuStore.addTabItem({name: JSON.parse(JSON.stringify(route.meta)).title, url: route.path, isActive: true});
 });
 
 const onClick = (obj: any) => {
   router.push({path: obj.url});
-  store.state.tabItems.forEach((item: TabItem) => {
+  menuStore.tabItems.forEach((item: TabItem) => {
     item.isActive = item.id == obj.id;
   });
 }
 
 const onCloseAll = () => {
-  initTabItems();
+  menuStore.initTabItems();
 }
 
 const refresh = () => {

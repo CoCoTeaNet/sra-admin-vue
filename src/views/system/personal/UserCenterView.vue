@@ -175,10 +175,11 @@ import {Lock} from "@element-plus/icons-vue";
 import {getDetail, updateByUser, doModifyPassword} from "@/api/system/sys-user-api";
 import {reqCommonFeedback, reqSuccessFeedback} from "@/api/ApiFeedback";
 import {RULE_MOBILE, RULE_EMAIL} from "@/utils/rules-util";
-import {updateUserInfo} from "@/store";
 import {ElMessage} from "element-plus";
 import {logout} from "@/api/system/sys-login-api";
+import {useUserStore} from "@/stores/user.ts";
 
+const userStore = useUserStore();
 const upload = ref<UploadInstance>();
 const fileList = ref<UploadUserFile[]>([]);
 
@@ -238,7 +239,7 @@ const initUserDetail = () => {
   reqCommonFeedback(getDetail(), (data: any) => {
     editForm.value = data;
     detailUser.value = Object.assign(detailUser.value, data);
-    updateUserInfo(detailUser.value);
+    userStore.updateUserInfo(detailUser.value);
     if (data) {
       let arr = data.avatar.split('/');
       fileList.value.push({

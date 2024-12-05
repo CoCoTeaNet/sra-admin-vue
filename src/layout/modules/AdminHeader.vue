@@ -2,10 +2,10 @@
   <el-row align="middle" class="header-row">
     <el-col :span="20" style="display: flex">
       <el-space>
-        <el-button link @click="setCollapseMenu">
+        <el-button link @click="menuStore.setCollapseMenu">
           <template #icon>
             <el-icon class="mouse-over right-item" :size="iconSize">
-              <expand v-if="store.state.isCollapseMenu"/>
+              <expand v-if="menuStore.isCollapseMenu"/>
               <fold v-else/>
             </el-icon>
           </template>
@@ -24,7 +24,7 @@
         </el-icon>
         <el-dropdown>
           <span class="mouse-over">
-            <el-avatar v-if="store.state.userInfo.avatar" shape="square" :src="avatar"/>
+            <el-avatar v-if="userStore.userinfo.avatar" shape="square" :src="avatar"/>
           </span>
           <template #dropdown>
             <el-dropdown-menu>
@@ -43,20 +43,22 @@ import {router} from "@/router";
 import {useRoute} from "vue-router";
 import {reqCommonFeedback} from "@/api/ApiFeedback";
 import {loginInfo, logout} from "@/api/system/sys-login-api";
-import {setUserInfo, useStore, setCollapseMenu} from "@/store";
 import AdminTab from "@/layout/modules/AdminTab.vue";
 import {Expand, Fold, FullScreen, House} from "@element-plus/icons-vue";
 import {onMounted, ref, watch} from 'vue';
 import default_avatar from "@/assets/svg-source/default-avatar.svg";
+import {useUserStore} from "@/stores/user.ts";
+import {useMenuStore} from "@/stores/menu.ts";
 
-const store = useStore();
+const userStore = useUserStore();
+const menuStore = useMenuStore();
 const route = useRoute();
 
 const iconSize = ref<number>(26);
 const avatar = ref<any>(default_avatar);
 
 onMounted(() => {
-  reqCommonFeedback(loginInfo(), (data:any) => setUserInfo(data));
+  reqCommonFeedback(loginInfo(), (data:any) => userStore.setUserInfo(data));
 });
 
 /**
@@ -71,7 +73,7 @@ const clickToGo = (name: string) => {
  */
 const doLogout = () => {
   reqCommonFeedback(logout(), () => {
-    setUserInfo({id: '', username: '', nickname: ''});
+    userStore.setUserInfo({id: '', username: '', nickname: ''});
     router.push({name: 'Login', query: {redirect: route.name ? route.name.toString() : ''}});
   });
 }
@@ -88,7 +90,7 @@ const doFullScreen = (event: { exitFullscreen: () => void; }) => {
   }
 }
 
-watch(()=>store.state.userInfo, (userinfo) => {
+watch(()=>userStore.userinfo, (userinfo) => {
   let avatarJpg = userinfo.avatar;
   if (avatarJpg) {
     avatar.value = `api/system/file/getAvatar?avatar=${avatarJpg}`;

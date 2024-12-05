@@ -2,10 +2,10 @@
   <el-row align="middle">
     <!-- 折叠菜单按钮 -->
     <el-col :span="2">
-      <el-button link @click="setCollapseMenu" style="color: #303133">
+      <el-button link @click="menuStore.setCollapseMenu" style="color: #303133">
         <template #icon>
           <el-icon class="mouse-over right-item" :size="20">
-            <expand v-if="store.state.isCollapseMenu"/>
+            <expand v-if="menuStore.isCollapseMenu"/>
             <fold v-else/>
           </el-icon>
         </template>
@@ -26,10 +26,12 @@
 import {onMounted, ref, watch} from "vue";
 import {RouteLocationMatched, useRoute} from "vue-router";
 import {Expand, Fold} from '@element-plus/icons-vue';
-import {useStore, setCollapseMenu} from "@/store";
+import {useUserStore} from "@/stores/user.ts";
+import {useMenuStore} from "@/stores/menu.ts";
 
 const route = useRoute();
-const store = useStore();
+const userStore = useUserStore();
+const menuStore = useMenuStore();
 
 const itemList = ref<RouteLocationMatched[]>([]);
 
