@@ -2,8 +2,8 @@
 
 ## 预备环境
 以下是SraAdmin服务端：
-1. SraAdmin（springboot3版本）：https://gitee.com/momoljw/sss-rbac-admin
-2. SraAdmin-Solon（solon版本）：https://gitee.com/momoljw/sra-admin-solon
+1. SraAdmin（springboot3版本）：https://github.com/CoCoTeaNet/sra-admin
+2. SraAdmin-Solon（solon版本）：https://github.com/CoCoTeaNet/sra-admin-solon
 
 ## Project setup（安装依赖）
 ```
